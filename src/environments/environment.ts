@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  api: "https://lab.invertebrado.co/api",
   production: false
 };
 
