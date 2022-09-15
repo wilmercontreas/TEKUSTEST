@@ -1,0 +1,7 @@
+.content{
+    min-height: 100vh;
+    min-width: 100vw;
+    display: grid;
+    place-items: center;
+    background-color: var(--lightgray);
+}

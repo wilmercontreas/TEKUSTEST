@@ -1,1 +1,40 @@
-<p>editsubs works!</p>
+<!-- <div class="container">
+    <app-navbar></app-navbar>
+    <div class="content ">
+        <div *ngIf="heroNotFound; else showInfo" class="error">
+            No encontramos un heroe con el id: <strong>{{id}}</strong>
+        </div>
+        <ng-template #showInfo>
+            <div class="card animate__animated animate__fadeIn animate__faster">
+            
+                <div class="container-tittle">
+                    <h2 class="tittle">Editar Heroe</h2>
+                </div>
+                <form (ngSubmit)="editarHeroe()" [formGroup]="miFormulario" autocomplete="off">
+                <div class="container-form"> 
+                    <div class="form-element" [ngClass]="{'form-element-err': campoNoValido('name') }">
+                        <span class="form-text">Nombre Personal</span>
+                        <input class="input" type="text" formControlName="name">
+                    </div>
+                    <span class="text-err animate__animated animate__headShake" *ngIf="campoNoValido('name')">{{mnsgErrName}}</span>
+
+                    <div class="form-element" [ngClass]="{'form-element-err': campoNoValido('alias') }">
+                        <span class="form-text">Alias de Heroe</span>
+                        <input class="input" type="text" formControlName="alias">
+                    </div>
+                    <span class="text-err animate__animated animate__headShake" *ngIf="campoNoValido('alias')" >{{mnsgErrAlias}}</span>
+                    
+                    <div class="form-element" [ngClass]="{'form-element-err': campoNoValido('power') }">
+                        <span class="form-text">Habilidad</span>
+                        <input class="input" type="text" formControlName="power">
+                    </div>
+                    <span class="text-err animate__animated animate__headShake" *ngIf="campoNoValido('power')" >{{mnsgErrpower}}</span>
+                    
+                    <button class="button" type="submit">EDITAR</button>
+                </div>
+                </form>
+
+            </div>
+        </ng-template>
+    </div>
+</div> -->

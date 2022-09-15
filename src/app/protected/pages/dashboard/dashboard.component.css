@@ -1,0 +1,94 @@
+.container{
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--lightgray);
+}
+
+.action{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content{
+    margin: 0 1em 1em 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    max-width: 2000px;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--blue);
+    border-radius: .4em;
+    padding: 1em;
+    box-shadow: 0 5px 10px var(--darkgray);
+    color: var(--white);
+    width: 16em;
+    height: 16em;
+}
+
+.buttons ,.info ,.headercard {
+    width: 100%;
+}
+
+.headercard, .info {
+    text-align: center;
+    max-height: 5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.alias{
+    font-family: "Segoe UI";
+    font-size: 1.3em;
+}
+
+.name{
+    font-family: "Segoe UI";
+    font-size: .9em;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-around;
+}
+
+.button-edit{
+    border: 2px solid var(--white);
+    background: none;
+    padding: .5em;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.button-elim{
+    border: 2px solid var(--red);
+    background: none;
+    padding: .5em;
+    color: var(--red);
+    cursor: pointer;
+}
+
+.button-create{
+    font-size: .9em;
+    font-weight: 00;
+    border: 2px solid var(--blue);
+    margin: 1em 1em;
+    background-color: var(--white);
+    padding: .5em;
+    color: var(--blue);
+    cursor: pointer;
+    box-shadow: 0 3px 5px var(--darkgray);
+}
+
+.void{
+    padding: 1em;
+    background-color: #f8d7da;
+    border-radius: 10px;
+    color: #842029;
+}

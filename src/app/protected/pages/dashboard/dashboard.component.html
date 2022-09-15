@@ -1,1 +1,25 @@
-<p>dashboard works!</p>
+<div class="container">
+    <app-navbar></app-navbar>
+    <div class="action">
+        <button class="button-create" routerLink="/dashboard/add">Create Subscriber</button>
+    </div>
+    <!-- <div *ngIf="heros.length === 0 ; else showInfo" class=" content void"> 
+        No hay Registros creados, porfavor cree uno nuevo para mostrar la informacion
+    </div>
+    <ng-template #showInfo>
+        <div class="content animate__animated animate__fadeIn animate__faster">
+            <div class="card" *ngFor="let hero of heros">
+                <div class="headercard">
+                    <span class="alias">{{hero.alias | titlecase}}</span>
+                </div>
+                <div class="info">
+                    <span class="name">{{hero.name | titlecase}} - {{hero.power}} </span>
+                </div>
+                <div class="buttons">
+                    <button class="button-edit" [routerLink]="['/dashboard/edit', hero.id]">Editar</button>
+                    <button class="button-elim" (click)="eliminar(hero.id)">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </ng-template> -->
+</div>

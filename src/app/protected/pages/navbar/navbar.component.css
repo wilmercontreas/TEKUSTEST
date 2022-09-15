@@ -1,0 +1,38 @@
+.header{
+    background-color: var(--blue);
+    width: 100%;
+    min-height: 4.7em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    color: var(--white);
+    box-shadow: 0 5px 10px var(--darkgray);
+}
+
+.tittle{
+    margin: 0.7em;
+}
+
+.button{
+    height: 2em;
+    margin: 0.7em;
+    padding: 1em;
+    font-weight:bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--blue);
+}
+
+.active{
+    border-bottom: 2px solid var(--white);
+}
+
+.button:hover {
+    cursor: pointer;
+    border: 1px solid var(--white);
+}
+
+.spacer{
+    flex: 1 1 auto;
+}
