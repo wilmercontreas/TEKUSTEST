@@ -15,7 +15,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1em;
+    gap: 2em;
     max-width: 2000px;
 }
 
@@ -28,7 +28,7 @@
     padding: 1em;
     box-shadow: 0 5px 10px var(--darkgray);
     color: var(--white);
-    width: 16em;
+    width: 15em;
     height: 16em;
 }
 

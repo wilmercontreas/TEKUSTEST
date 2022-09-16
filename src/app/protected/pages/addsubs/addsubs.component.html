@@ -1,35 +1,70 @@
-<!-- <div class="container">
+<div class="container">
     <app-navbar></app-navbar>
     <div class="content ">
         <div class="card animate__animated animate__fadeIn animate__faster">
         
             <div class="container-tittle">
-                <h2 class="tittle">Crear Heroe</h2>
+                <h2 class="tittle">Crear Subscriber</h2>
             </div>
-            <form (ngSubmit)="crearHeroe()" [formGroup]="miFormulario" autocomplete="off">
+            <form (ngSubmit)="addSub()" [formGroup]="form" autocomplete="off">
             <div class="container-form"> 
-                <div class="form-element" [ngClass]="{'form-element-err': campoNoValido('name') }">
-                    <span class="form-text">Nombre Personal</span>
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('name') }">
+                    <span class="form-text">Name</span>
                     <input class="input" type="text" formControlName="name">
                 </div>
-                <span class="text-err animate__animated animate__headShake" *ngIf="campoNoValido('name')">{{mnsgErrName}}</span>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('name')">{{mnsgErrName}}</span>
 
-                <div class="form-element" [ngClass]="{'form-element-err': campoNoValido('alias') }">
-                    <span class="form-text">Alias de Heroe</span>
-                    <input class="input" type="text" formControlName="alias">
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('email') }">
+                    <span class="form-text">Email</span>
+                    <input class="input" type="text" formControlName="email">
                 </div>
-                <span class="text-err animate__animated animate__headShake" *ngIf="campoNoValido('alias')" >{{mnsgErrAlias}}</span>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('email')" >{{mnsgErrEmail}}</span>
                 
-                <div class="form-element" [ngClass]="{'form-element-err': campoNoValido('power') }">
-                    <span class="form-text">Habilidad</span>
-                    <input class="input" type="text" formControlName="power">
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('countryCode') }">
+                    <span class="form-text">Country code</span>
+                    <input class="input" type="text" formControlName="countryCode">
                 </div>
-                <span class="text-err animate__animated animate__headShake" *ngIf="campoNoValido('power')" >{{mnsgErrpower}}</span>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('countryCode')" >{{mnsgErrCountryCode}}</span>
+
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('countryName') }">
+                    <span class="form-text">Country name</span>
+                    <input class="input" type="text" formControlName="countryName">
+                </div>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('countryName')" >{{mnsgErrCountryName}}</span>
+
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('phoneCode') }">
+                    <span class="form-text">Phone code</span>
+                    <input class="input" type="text" formControlName="phoneCode">
+                </div>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('phoneCode')" >{{mnsgErrPhoneCode}}</span>
+
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('phoneNumber') }">
+                    <span class="form-text">Phone number</span>
+                    <input class="input" type="text" formControlName="phoneNumber">
+                </div>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('phoneNumber')" >{{mnsgErrPhoneNumber}}</span>
+
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('jobTitle') }">
+                    <span class="form-text">Job title</span>
+                    <input class="input" type="text" formControlName="jobTitle">
+                </div>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('jobTitle')" >{{mnsgErrJobTitle}}</span>
+
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('area') }">
+                    <span class="form-text">Area</span>
+                    <input class="input" type="text" formControlName="area">
+                </div>
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('area')" >{{mnsgErrArea}}</span>
                 
-                <button class="button" type="submit">CREAR</button>
+                <div class="form-element" >
+                    <span class="form-text">Topics</span>
+                    <input class="input" type="text" formControlName="topics">
+                </div>
+                
+                <button class="button" type="submit">CREATE</button>
             </div>
             </form>
 
         </div>
     </div>
-</div> -->
+</div>

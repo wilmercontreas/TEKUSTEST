@@ -13,15 +13,15 @@ export class AddsubsComponent implements OnInit {
 
   // creation reactive form 
   form: FormGroup = this.fb.group({
-    name: ['patata', [Validators.required] ],
-    email: ['MrPotat0', [Validators.required]],
-    countryCode: ['MrPotat0', [Validators.required]],
-    countryName: ['MrPotat0', [Validators.required]],
-    phoneCode: ['MrPotat0', [Validators.required]],
-    phoneNumber: ['MrPotat0', [Validators.required]],
-    jobTitle: ['MrPotat0', [Validators.required]],
-    area: ['MrPotat0', [Validators.required]],
-    topics: ['MrPotat0', [Validators.required]]
+    name: ['', [Validators.required] ],
+    email: ['', [Validators.required, Validators.pattern(this.protectedService.validatorEmailPattern)]],
+    countryCode: ['', [Validators.required]],
+    countryName: ['', [Validators.required]],
+    phoneCode: ['', [Validators.required]],
+    phoneNumber: ['', [Validators.required]],
+    jobTitle: ['', [Validators.required]],
+    area: ['', [Validators.required]],
+    topics: ['', []]
   });
 
   constructor(private fb: FormBuilder, 
@@ -30,18 +30,55 @@ export class AddsubsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // show error message user input 
-  get mnsgErrUserName(): string {
-    if(this.form.controls['userName']?.errors?.['required']){
-      return 'The user name is required'
+  // show error message inputs
+  get mnsgErrName(): string {
+    if(this.form.controls['name']?.errors?.['required']){
+      return 'The name is required'
     }
     return '';
   };
-
-  // show error message password input 
-  get mnsgErrpassword(): string {
-    if(this.form.controls['password']?.errors?.['required']){
-      return 'The password is required'
+  get mnsgErrCountryCode(): string {
+    if(this.form.controls['countryCode']?.errors?.['required']){
+      return 'The Country Code is required'
+    }
+    return '';
+  };
+  get mnsgErrCountryName(): string {
+    if(this.form.controls['countryName']?.errors?.['required']){
+      return 'The country name is required'
+    }
+    return '';
+  };
+  get mnsgErrPhoneCode(): string {
+    if(this.form.controls['phoneCode']?.errors?.['required']){
+      return 'The Phone Code is required'
+    }
+    return '';
+  };
+  get mnsgErrPhoneNumber(): string {
+    if(this.form.controls['phoneNumber']?.errors?.['required']){
+      return 'The phone number is required'
+    }
+    return '';
+  };
+  get mnsgErrJobTitle(): string {
+    if(this.form.controls['jobTitle']?.errors?.['required']){
+      return 'The job title is required'
+    }
+    return '';
+  };
+  get mnsgErrArea(): string {
+    if(this.form.controls['area']?.errors?.['required']){
+      return 'The area is required'
+    }
+    return '';
+  };
+  // show error message email input 
+  get mnsgErrEmail(): string {
+    if(this.form.controls['email']?.errors?.['required']){
+      return 'The email is required'
+    } else if(this.form.controls['email']?.errors?.['pattern']){
+      return 'Mail pattern invalid'
     }
     return '';
   };
@@ -67,12 +104,12 @@ export class AddsubsComponent implements OnInit {
     
     // call add sub service
     let topicsArr: any[] = [];
-    topicsArr.push( this.form.value.topics);
+    if(this.form.value.topics) topicsArr.push(this.form.value.topics);
     const body = {
-      'Subscribers': [
+      "Subscribers": [
         {
         'Name': this.form.value.name,
-        "Email":  this.form.value.email,
+        'Email':  this.form.value.email,
         'CountryCode':  this.form.value.countryCode,
         'CountryName':  this.form.value.countryName,
         'PhoneCode':  this.form.value.phoneCode,
@@ -83,24 +120,26 @@ export class AddsubsComponent implements OnInit {
         }
       ]
     };
-
-    this.protectedService.addSubs(body).subscribe(ok => {
-      // if ( ok.ok === true ) {
-      //   Swal.fire({
-      //     icon: 'success',
-      //     title: 'Creado correctamente',
-      //     showConfirmButton: false,
-      //     timer: 1500
-      //   });
-      //   this.router.navigateByUrl('/dashboard');
-      // } else {
-      //   Swal.fire({
-      //     icon: 'error',
-      //     title: 'Oops... no se realizo la accion',
-      //     showConfirmButton: false,
-      //     timer: 1500
-      //   });
-      // }
+    console.log(body);
+    this.protectedService.addSubs(body).subscribe({
+      next: resp => {
+        console.log(resp);
+        Swal.fire({
+          icon: 'success',
+          title: 'Action completed',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.router.navigateByUrl('/dashboard');
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Action failed',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }
     });
   }
 

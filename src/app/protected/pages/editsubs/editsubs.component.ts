@@ -16,11 +16,14 @@ export class EditsubsComponent implements OnInit {
   id: string = ""; 
   SubNotFound: boolean = false;
 
-  //creacion del formulario reactivo 
   form: FormGroup = this.fb.group({
     name: ['', [Validators.required] ],
-    alias: ['', [Validators.required]],
-    power: ['', [Validators.required]]
+    email: ['', [Validators.required, Validators.pattern(this.protectedService.validatorEmailPattern)]],
+    countryCode: ['', [Validators.required]],
+    phoneNumber: ['', [Validators.required]],
+    jobTitle: ['', [Validators.required]],
+    area: ['', [Validators.required]],
+    topics: ['', []]
   });
 
   constructor(private fb: FormBuilder, 
@@ -29,10 +32,53 @@ export class EditsubsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,){}
 
   ngOnInit(): void {
-    this.cargarHeroe();
+    this.loadSub();
   }
 
-  cargarHeroe(){
+  get mnsgErrName(): string {
+    if(this.form.controls['name']?.errors?.['required']){
+      return 'The name is required'
+    }
+    return '';
+  };
+  get mnsgErrEmail(): string {
+    if(this.form.controls['email']?.errors?.['required']){
+      return 'The email is required'
+    } else if(this.form.controls['email']?.errors?.['pattern']){
+      return 'Mail pattern invalid'
+    }
+    return '';
+  };
+  get mnsgErrCountryCode(): string {
+    if(this.form.controls['countryCode']?.errors?.['required']){
+      return 'The Country Code is required'
+    }
+    return '';
+  };
+  get mnsgErrPhoneNumber(): string {
+    if(this.form.controls['phoneNumber']?.errors?.['required']){
+      return 'The phone number is required'
+    }
+    return '';
+  };
+  get mnsgErrJobTitle(): string {
+    if(this.form.controls['jobTitle']?.errors?.['required']){
+      return 'The job title is required'
+    }
+    return '';
+  };
+  get mnsgErrArea(): string {
+    if(this.form.controls['area']?.errors?.['required']){
+      return 'The area is required'
+    }
+    return '';
+  };
+  
+  invalidInput(campo: string) {
+    return this.form.controls[campo].errors && this.form.controls[campo].touched;
+  }
+
+  loadSub(){
     this.activatedRoute.params.pipe(
       switchMap( params => {
         this.id = params['id'];
@@ -40,51 +86,26 @@ export class EditsubsComponent implements OnInit {
       })
     ).subscribe({
         next: resp => {
+          console.log(resp);
           if (!resp) {
             this.SubNotFound = true;
           }
           this.sub = resp;
           this.form.patchValue({
-            name: this.sub.name,
-            alias: this.sub.alias,
+            name: this.sub.Name,
+            email: this.sub.Email,
+            countryCode: this.sub.CountryCode,
+            phoneNumber: this.sub.PhoneNumber,
+            jobTitle: this.sub.JobTitle,
+            area: this.sub.Area,
+            topics: this.sub.Topics[0]
           });
         },
         error: () => this.SubNotFound = true
     });
   }
 
-  // mostrar mensaje de error para el campo de name 
-  get mnsgErrName(): string {
-    if(this.form.controls['name']?.errors?.['required']){
-      return 'El campo es obligatorio'
-    }
-    return '';
-  };
-
-  // mostrar mensaje de error para el campo de alias 
-  get mnsgErrAlias(): string {
-    if(this.form.controls['alias']?.errors?.['required']){
-      return 'El campo es obligatorio'
-    }
-    return '';
-  };
-
-  // mostrar mensaje de error para el campo de power 
-  get mnsgErrpower(): string {
-    if(this.form.controls['power']?.errors?.['required']){
-      return 'El campo es obligatorio'
-    }
-    return '';
-  };
-
-  // evaluar si campos del fomulario fueron tocados y son invalidos para mostrarmensage de error
-  campoNoValido(campo: string) {
-    return this.form.controls[campo].errors && this.form.controls[campo].touched;
-  }
-  
-  // metodo submit del formulario
   updateSub(){
-    // campos del formulario incorrecto
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       Swal.fire({
@@ -95,16 +116,22 @@ export class EditsubsComponent implements OnInit {
       });
       return;
     }
-    let topicsArr: any [] = [];
-    topicsArr.push(this.form.value.topics);
+    let topicsArr: any[] = [];
+    if(this.form.value.topics) topicsArr.push(this.form.value.topics);
     const body = {
-      id: this.id,
-      ...this.form.value,
-      topics: topicsArr
+      Id: this.id,
+      Name: this.form.value.name,
+      Email: this.form.value.email,
+      CountryCode: this.form.value.countryCode,
+      PhoneNumber: this.form.value.phoneNumber,
+      JobTitle: this.form.value.jobTitle,
+      Area: this.form.value.area,
+      Topics: topicsArr
     };
-    // llamado al servicio de crear
-    this.protectedService.updateSub(body).subscribe(ok => {
-      if ( ok === true ) {
+    console.log(body);
+    this.protectedService.updateSub(body).subscribe({
+      next: resp => {
+        console.log(resp);
         Swal.fire({
           icon: 'success',
           title: 'Action completed',
@@ -112,12 +139,13 @@ export class EditsubsComponent implements OnInit {
           timer: 1500
         });
         this.router.navigateByUrl('/dashboard');
-      } else {
+      },
+      error: () => {
         Swal.fire({
           icon: 'error',
           title: 'Action failed',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1000
         });
       }
     });

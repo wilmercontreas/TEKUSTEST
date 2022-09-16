@@ -15,35 +15,38 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router, private protectedService: ProtectedService) { }
 
   ngOnInit(): void {
-    this.protectedService.getSubs().subscribe( resp => {
-      this.subs = resp;
-      console.log(this.subs);
-    }, (err) => {
-      this.subs = [];
+    this.protectedService.getSubs().subscribe({
+      next: resp => {
+        this.subs = resp;
+        console.log(this.subs);
+      },
+      error: () => this.subs = []
     });
   }
 
   deleteSub(id: string) {
-    this.protectedService.deleteSub(id).subscribe( resp => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Action completed',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      console.log(resp);
-    }, (err) => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Action failed',
-        showConfirmButton: false,
-        timer: 1000
-      });
+    this.protectedService.deleteSub(id).subscribe({
+      next: resp => {
+        console.log(resp);
+        Swal.fire({
+          icon: 'success',
+          title: 'Action completed',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Action failed',
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }
     });
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this.router.navigate([currentUrl]);
-        console.log(currentUrl);
     });
   }
 

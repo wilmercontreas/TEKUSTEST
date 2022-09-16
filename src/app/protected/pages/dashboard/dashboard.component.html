@@ -3,23 +3,25 @@
     <div class="action">
         <button class="button-create" routerLink="/dashboard/add">Create Subscriber</button>
     </div>
-    <!-- <div *ngIf="heros.length === 0 ; else showInfo" class=" content void"> 
-        No hay Registros creados, porfavor cree uno nuevo para mostrar la informacion
+    <div *ngIf="subs.length === 0 ; else showInfo" class="content void"> 
+        There is not registers to show, please create one.
     </div>
     <ng-template #showInfo>
         <div class="content animate__animated animate__fadeIn animate__faster">
-            <div class="card" *ngFor="let hero of heros">
+            <div class="card" *ngFor="let sub of subs">
                 <div class="headercard">
-                    <span class="alias">{{hero.alias | titlecase}}</span>
+                    <span class="alias">{{sub.Name | titlecase}}</span>
                 </div>
                 <div class="info">
-                    <span class="name">{{hero.name | titlecase}} - {{hero.power}} </span>
+                    <span class="name">
+                        {{sub.Email}} - {{sub.JobTitle}} - {{sub.CountryName}} - {{sub.PhoneNumber}}
+                    </span>
                 </div>
                 <div class="buttons">
-                    <button class="button-edit" [routerLink]="['/dashboard/edit', hero.id]">Editar</button>
-                    <button class="button-elim" (click)="eliminar(hero.id)">Eliminar</button>
+                    <button class="button-edit" [routerLink]="['/dashboard/edit', sub.Id]">Edit</button>
+                    <button class="button-elim" (click)="deleteSub(sub.Id)">Delete</button>
                 </div>
             </div>
         </div>
-    </ng-template> -->
+    </ng-template>
 </div>
