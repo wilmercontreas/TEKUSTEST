@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Subscriber } from '../../interfaces/protected';
 import { ProtectedService } from '../../services/protected.service';
 
 @Component({
@@ -10,22 +11,22 @@ import { ProtectedService } from '../../services/protected.service';
 })
 export class DashboardComponent implements OnInit {
 
-  subs: any = [];
+  subs: Subscriber[] = [];
 
   constructor(private router: Router, private protectedService: ProtectedService) { }
 
   ngOnInit(): void {
     this.protectedService.getSubs().subscribe({
       next: resp => {
-        this.subs = resp;
+        this.subs = resp || [] ;
         console.log(this.subs);
       },
       error: () => this.subs = []
     });
   }
 
-  deleteSub(id: string) {
-    this.protectedService.deleteSub(id).subscribe({
+  deleteSub(id: number) {
+    this.protectedService.deleteSub(id.toString()).subscribe({
       next: resp => {
         console.log(resp);
         Swal.fire({

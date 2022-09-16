@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProtectedService } from '../../services/protected.service';
+import { AddSubscribers } from '../../interfaces/protected';
 
 @Component({
   selector: 'app-addsubs',
@@ -105,7 +106,7 @@ export class AddsubsComponent implements OnInit {
     // call add sub service
     let topicsArr: any[] = [];
     if(this.form.value.topics) topicsArr.push(this.form.value.topics);
-    const body = {
+    const body:AddSubscribers = {
       "Subscribers": [
         {
         'Name': this.form.value.name,

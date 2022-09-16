@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { AddSubscribersResponse, DeleteSubscriberResponse, GetSubscribersResponse, Subscriber, UpdateSubscribersResponse } from '../interfaces/protected';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { AddSubscribers, AddSubscribersResponse, DeleteSubscriberResponse, GetSubscribersResponse, Subscriber, UpdateSubscribersResponse } from '../interfaces/protected';
+import { map } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -27,14 +27,13 @@ export class ProtectedService {
     return this.http.get<Subscriber>(endPoint, {headers});
   }
 
-  // TODO: CAMBIAR EL BODY
-  addSubs( body: any ) {
+  addSubs( body: AddSubscribers ) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('jwtokken') || ''}`);
     const endPoint = `${this.api}/subscribers`;
     return this.http.post<AddSubscribersResponse>(endPoint, body, {headers});
   }
 
-  updateSub( body: any ) {
+  updateSub( body: Subscriber ) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('jwtokken') || ''}`);
     const endPoint = `${this.api}/subscribers/${body.Id}`;
     return this.http.put<UpdateSubscribersResponse>(endPoint, body, {headers});

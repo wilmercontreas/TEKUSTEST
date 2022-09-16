@@ -10,8 +10,8 @@ export interface Subscriber {
     SystemId?:                     null | string;
     Area?:                         string;
     PublicId?:                     number;
-    CountryCode?:                  CountryCode;
-    CountryName?:                  CountryName;
+    CountryCode?:                  string;
+    CountryName?:                  string;
     Name?:                         string;
     EndpointsCount?:               number;
     Email?:                        string;
@@ -25,10 +25,10 @@ export interface Subscriber {
     SubscriptionDate?:             null;
     SubscriptionMethod?:           number;
     SubscriptionState?:            number;
-    SubscriptionStateDescription?: SubscriptionStateDescription;
+    SubscriptionStateDescription?: string;
     Topics?:                       any[];
     ValidEmail?:                   boolean;
-    Activity?:                     Activity;
+    Activity?:                     string;
     ConnectionState?:              number;
     Id?:                           number;
     Message?: string;
@@ -44,6 +44,10 @@ export interface AddSubscribersResponse {
     Message?: string;
 }
 
+export interface AddSubscribers {
+    Subscribers?: Subscriber[];
+}
+
 // update sub
 export interface UpdateSubscribersResponse {
     Message?: string;
@@ -56,23 +60,3 @@ export interface DeleteSubscriberResponse {
     error?: string;
 }
 
-
-export enum Activity {
-    Empty = "--",
-}
-
-export enum CountryCode {
-    CA = "CA",
-    Co = "CO",
-    Us = "US",
-}
-
-export enum CountryName {
-    Canada = "Canada",
-    Colombia = "Colombia",
-    UnitedStates = "United States",
-}
-
-export enum SubscriptionStateDescription {
-    Pendiente = "Pendiente",
-}

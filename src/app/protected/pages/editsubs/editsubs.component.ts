@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
+import { Subscriber } from '../../interfaces/protected';
 import { ProtectedService } from '../../services/protected.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { ProtectedService } from '../../services/protected.service';
 })
 export class EditsubsComponent implements OnInit {
 
-  sub: any = {};
+  sub: Subscriber = {};
   id: string = ""; 
   SubNotFound: boolean = false;
 
@@ -98,7 +99,7 @@ export class EditsubsComponent implements OnInit {
             phoneNumber: this.sub.PhoneNumber,
             jobTitle: this.sub.JobTitle,
             area: this.sub.Area,
-            topics: this.sub.Topics[0]
+            topics: (this.sub.Topics ? this.sub.Topics[0] : '')
           });
         },
         error: () => this.SubNotFound = true
@@ -118,8 +119,8 @@ export class EditsubsComponent implements OnInit {
     }
     let topicsArr: any[] = [];
     if(this.form.value.topics) topicsArr.push(this.form.value.topics);
-    const body = {
-      Id: this.id,
+    const body: Subscriber = {
+      Id: Number(this.id),
       Name: this.form.value.name,
       Email: this.form.value.email,
       CountryCode: this.form.value.countryCode,

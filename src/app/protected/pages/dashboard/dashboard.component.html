@@ -19,7 +19,7 @@
                 </div>
                 <div class="buttons">
                     <button class="button-edit" [routerLink]="['/dashboard/edit', sub.Id]">Edit</button>
-                    <button class="button-elim" (click)="deleteSub(sub.Id)">Delete</button>
+                    <button class="button-elim" (click)="deleteSub(sub.Id!)">Delete</button>
                 </div>
             </div>
         </div>
