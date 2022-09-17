@@ -10,7 +10,9 @@ export class AuthGuard implements CanActivate, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
+    // call service to check jwt
     const loggedIn = this.authService.jwtValid();
+    // sow err modal if user is not logged 
     if (!loggedIn) {
       Swal.fire({
         icon: 'error',
@@ -25,7 +27,9 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   canLoad(): boolean {
+    // call service to check jwt
     const loggedIn = this.authService.jwtValid();
+    // sow err modal if user is not logged 
     if (!loggedIn) {
       Swal.fire({
         icon: 'error',

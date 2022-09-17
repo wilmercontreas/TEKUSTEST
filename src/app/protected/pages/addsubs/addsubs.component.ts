@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProtectedService } from '../../services/protected.service';
-import { AddSubscribers } from '../../interfaces/protected';
+import { AddSubscribers, Countries } from '../../interfaces/protected';
 
 @Component({
   selector: 'app-addsubs',
@@ -12,13 +12,14 @@ import { AddSubscribers } from '../../interfaces/protected';
 })
 export class AddsubsComponent implements OnInit {
 
+  countries: Countries[] = [];
+  selectedCountry: Countries = {};
+
   // creation reactive form 
   form: FormGroup = this.fb.group({
     name: ['', [Validators.required] ],
     email: ['', [Validators.required, Validators.pattern(this.protectedService.validatorEmailPattern)]],
-    countryCode: ['', [Validators.required]],
-    countryName: ['', [Validators.required]],
-    phoneCode: ['', [Validators.required]],
+    country: ['', [Validators.required]],
     phoneNumber: ['', [Validators.required]],
     jobTitle: ['', [Validators.required]],
     area: ['', [Validators.required]],
@@ -29,30 +30,23 @@ export class AddsubsComponent implements OnInit {
     private router: Router, 
     private protectedService: ProtectedService){}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // call countries service to sow on select form 
+    this.protectedService.getCountries().subscribe({
+      next: resp => {
+        if (!resp) {
+          this.countries = [];
+        }
+        this.countries = resp!;
+      },
+      error: () => this.countries = []
+    })
+  }
 
-  // show error message inputs
+  // error message inputs invalid
   get mnsgErrName(): string {
     if(this.form.controls['name']?.errors?.['required']){
       return 'The name is required'
-    }
-    return '';
-  };
-  get mnsgErrCountryCode(): string {
-    if(this.form.controls['countryCode']?.errors?.['required']){
-      return 'The Country Code is required'
-    }
-    return '';
-  };
-  get mnsgErrCountryName(): string {
-    if(this.form.controls['countryName']?.errors?.['required']){
-      return 'The country name is required'
-    }
-    return '';
-  };
-  get mnsgErrPhoneCode(): string {
-    if(this.form.controls['phoneCode']?.errors?.['required']){
-      return 'The Phone Code is required'
     }
     return '';
   };
@@ -74,7 +68,12 @@ export class AddsubsComponent implements OnInit {
     }
     return '';
   };
-  // show error message email input 
+  get mnsgErrCountry(): string {
+    if(this.form.controls['country']?.errors?.['required']){
+      return 'The country is required'
+    }
+    return '';
+  };
   get mnsgErrEmail(): string {
     if(this.form.controls['email']?.errors?.['required']){
       return 'The email is required'
@@ -91,7 +90,7 @@ export class AddsubsComponent implements OnInit {
   
   // submit method
   addSub(){
-    // invalid inputs in form
+    //show error modal if inputs are invalid after submit
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       Swal.fire({
@@ -102,8 +101,9 @@ export class AddsubsComponent implements OnInit {
       });
       return;
     }
-    
-    // call add sub service
+    // serch countrycode, phonecode on selected country on select 
+    this.selectedCountry = this.countries.find(item => item.Code == this.form.value.country)!;
+    // perepare payload to send on body service
     let topicsArr: any[] = [];
     if(this.form.value.topics) topicsArr.push(this.form.value.topics);
     const body:AddSubscribers = {
@@ -111,9 +111,9 @@ export class AddsubsComponent implements OnInit {
         {
         'Name': this.form.value.name,
         'Email':  this.form.value.email,
-        'CountryCode':  this.form.value.countryCode,
-        'CountryName':  this.form.value.countryName,
-        'PhoneCode':  this.form.value.phoneCode,
+        'CountryCode': this.selectedCountry.Code,
+        'CountryName':  this.selectedCountry.Name,
+        'PhoneCode':  this.selectedCountry.PhoneCode!,
         'PhoneNumber':  this.form.value.phoneNumber,
         'JobTitle':  this.form.value.jobTitle,
         'Area':  this.form.value.area,
@@ -121,10 +121,9 @@ export class AddsubsComponent implements OnInit {
         }
       ]
     };
-    console.log(body);
+    // call add sub service and show modal according backend response
     this.protectedService.addSubs(body).subscribe({
       next: resp => {
-        console.log(resp);
         Swal.fire({
           icon: 'success',
           title: 'Action completed',

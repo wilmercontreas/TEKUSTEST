@@ -23,15 +23,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // show error message user input 
+  // error messages invalid inputs
   get mnsgErrUserName(): string {
     if(this.form.controls['userName']?.errors?.['required']){
       return 'The user name is required'
     }
     return '';
   };
-
-  // show error message password input 
   get mnsgErrpassword(): string {
     if(this.form.controls['password']?.errors?.['required']){
       return 'The password is required'
@@ -46,7 +44,7 @@ export class LoginComponent implements OnInit {
   
   // submit method
   login(){
-    // invalid inputs in form
+    // show arror modal if invalid inputs after submit
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       Swal.fire({
@@ -58,7 +56,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     
-    // call login service\
+    // call login service, redirect to dash board if error show error modal
     this.authService.logIn(this.form.value).subscribe(resp => {
       if ( resp.Status === 1 ) {
         this.router.navigateByUrl('/dashboard');

@@ -20,24 +20,14 @@
                 </div>
                 <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('email')" >{{mnsgErrEmail}}</span>
                 
-                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('countryCode') }">
-                    <span class="form-text">Country code</span>
-                    <input class="input" type="text" formControlName="countryCode">
+                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('country') }">
+                    <span class="form-text">Country</span>
+                    <select name="country" formControlName="country" >
+                        <option *ngFor="let country of countries" [value]="country.Code">{{country.Name}}</option>
+                    </select>
                 </div>
-                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('countryCode')" >{{mnsgErrCountryCode}}</span>
-
-                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('countryName') }">
-                    <span class="form-text">Country name</span>
-                    <input class="input" type="text" formControlName="countryName">
-                </div>
-                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('countryName')" >{{mnsgErrCountryName}}</span>
-
-                <div class="form-element" [ngClass]="{'form-element-err': invalidInput('phoneCode') }">
-                    <span class="form-text">Phone code</span>
-                    <input class="input" type="text" formControlName="phoneCode">
-                </div>
-                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('phoneCode')" >{{mnsgErrPhoneCode}}</span>
-
+                <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('country')" >{{mnsgErrCountry}}</span>
+                
                 <div class="form-element" [ngClass]="{'form-element-err': invalidInput('phoneNumber') }">
                     <span class="form-text">Phone number</span>
                     <input class="input" type="text" formControlName="phoneNumber">
@@ -55,7 +45,7 @@
                     <input class="input" type="text" formControlName="area">
                 </div>
                 <span class="text-err animate__animated animate__headShake" *ngIf="invalidInput('area')" >{{mnsgErrArea}}</span>
-                
+                              
                 <div class="form-element" >
                     <span class="form-text">Topics</span>
                     <input class="input" type="text" formControlName="topics">

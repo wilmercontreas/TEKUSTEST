@@ -16,19 +16,20 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router, private protectedService: ProtectedService) { }
 
   ngOnInit(): void {
+    // call get all subs service and save data on array
     this.protectedService.getSubs().subscribe({
       next: resp => {
         this.subs = resp || [] ;
-        console.log(this.subs);
       },
       error: () => this.subs = []
     });
   }
 
+  // delete sub method 
   deleteSub(id: number) {
+    // call delete sub service and show modal according backend response
     this.protectedService.deleteSub(id.toString()).subscribe({
       next: resp => {
-        console.log(resp);
         Swal.fire({
           icon: 'success',
           title: 'Action completed',
@@ -45,6 +46,7 @@ export class DashboardComponent implements OnInit {
         });
       }
     });
+    // reload page after deleted 
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
         this.router.navigate([currentUrl]);

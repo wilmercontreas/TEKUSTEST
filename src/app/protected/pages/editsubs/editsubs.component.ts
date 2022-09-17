@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Subscriber } from '../../interfaces/protected';
+import { Countries, Subscriber } from '../../interfaces/protected';
 import { ProtectedService } from '../../services/protected.service';
 
 @Component({
@@ -16,7 +16,10 @@ export class EditsubsComponent implements OnInit {
   sub: Subscriber = {};
   id: string = ""; 
   SubNotFound: boolean = false;
+  countries: Countries[] = [];
+  selectedCountry: Countries = {};
 
+  // create reactive form 
   form: FormGroup = this.fb.group({
     name: ['', [Validators.required] ],
     email: ['', [Validators.required, Validators.pattern(this.protectedService.validatorEmailPattern)]],
@@ -33,9 +36,10 @@ export class EditsubsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,){}
 
   ngOnInit(): void {
-    this.loadSub();
+    this.loadSubAndCountries();
   }
 
+  // error messages of invalid inputs 
   get mnsgErrName(): string {
     if(this.form.controls['name']?.errors?.['required']){
       return 'The name is required'
@@ -52,7 +56,7 @@ export class EditsubsComponent implements OnInit {
   };
   get mnsgErrCountryCode(): string {
     if(this.form.controls['countryCode']?.errors?.['required']){
-      return 'The Country Code is required'
+      return 'The country is required'
     }
     return '';
   };
@@ -75,23 +79,26 @@ export class EditsubsComponent implements OnInit {
     return '';
   };
   
+  // show message error if inputs was touched and have errors
   invalidInput(campo: string) {
     return this.form.controls[campo].errors && this.form.controls[campo].touched;
   }
 
-  loadSub(){
+  // method to call get services and save data in arrays 
+  loadSubAndCountries(){
     this.activatedRoute.params.pipe(
+      // get the id on the url and call getsubbyid service
       switchMap( params => {
         this.id = params['id'];
         return this.protectedService.getSubById(params['id']);
       })
     ).subscribe({
         next: resp => {
-          console.log(resp);
           if (!resp) {
             this.SubNotFound = true;
           }
           this.sub = resp;
+          // write data from response service on form
           this.form.patchValue({
             name: this.sub.Name,
             email: this.sub.Email,
@@ -104,9 +111,21 @@ export class EditsubsComponent implements OnInit {
         },
         error: () => this.SubNotFound = true
     });
+    // call get countries service
+    this.protectedService.getCountries().subscribe({
+      next: resp => {
+        if (!resp) {
+          this.countries = [];
+        }
+        this.countries = resp!;
+      },
+      error: () => this.countries = []
+    });
   }
 
+  // update sub method 
   updateSub(){
+    //show error modal if inputs are invalid after submit
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       Swal.fire({
@@ -117,6 +136,7 @@ export class EditsubsComponent implements OnInit {
       });
       return;
     }
+    // perepare payload to send on body service
     let topicsArr: any[] = [];
     if(this.form.value.topics) topicsArr.push(this.form.value.topics);
     const body: Subscriber = {
@@ -129,10 +149,9 @@ export class EditsubsComponent implements OnInit {
       Area: this.form.value.area,
       Topics: topicsArr
     };
-    console.log(body);
+    // call update sub service and show modal according backend response
     this.protectedService.updateSub(body).subscribe({
       next: resp => {
-        console.log(resp);
         Swal.fire({
           icon: 'success',
           title: 'Action completed',

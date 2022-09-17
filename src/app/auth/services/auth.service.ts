@@ -12,18 +12,12 @@ export class AuthService {
 
   public validatorEmailPattern : string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   private api: string = environment.api;
-  private _user!: User;
-
-  get user(){
-    return {...this._user};
-  }
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   logIn(body: User){
-
     const endPoint = `${this.api}/account/login`;
-
+    // login request and set token in local storage 
     return this.http.post<LoginResponse>(endPoint, body).pipe(
       tap( resp => {
         if ( resp.Token ) {
@@ -36,6 +30,7 @@ export class AuthService {
   }
 
   jwtValid(): boolean{
+    // get token of local storage and chek if valid or no expider 
     const jwt = localStorage.getItem('jwtokken') || '';
     if(!localStorage.getItem('jwtokken') || this.jwtHelper.isTokenExpired(jwt)){
       return false
@@ -43,6 +38,7 @@ export class AuthService {
     return true;
   }
 
+  // remove token from local storage 
   logOut(){
     localStorage.removeItem('jwtokken');
   }
